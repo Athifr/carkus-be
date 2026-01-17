@@ -9,6 +9,12 @@ import { createHash } from "../utils/hash.js";
 export async function login(req, res, next) {
   try {
     const { username, password } = req.body;
+    
+   if (!username || !password) {
+      res.status(400).json({ message: "Username and password are required" });
+      return; // Cukup tulis return tanpa mengembalikan objek res
+    }
+
     const passwordHash = createHash(password);
     const user = await User.findOne({ username });
     if (!user) {
@@ -23,8 +29,11 @@ export async function login(req, res, next) {
     });
     res.status(200).json({ userId, token });
   } catch (err) {
-    next(err);
-  }
+    console.error("DEBUG LOGIN ERROR:", err); // Ini akan muncul di Vercel Logs
+    // Tambahkan res.status sementara jika next(err) tidak memberikan info
+    res.status(500).json({ error: err.message, stack: err.stack }); 
+    // next(err); // Matikan dulu sementara biar info error keluar ke browser
+}
 }
 
 /** @type{import("express").RequestHandler} */
