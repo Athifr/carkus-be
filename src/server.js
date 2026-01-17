@@ -1,10 +1,10 @@
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import { app } from "./app.js";
+import app from "./app.js"; // Hapus kurung kurawal di sini
 
 dotenv.config();
 
-// Optimization untuk Serverless: Cek koneksi yang sudah ada
+// Optimization untuk Serverless
 const connectDB = async () => {
   if (mongoose.connection.readyState >= 1) return;
   try {
@@ -15,10 +15,8 @@ const connectDB = async () => {
   }
 };
 
-// Jalankan koneksi
 connectDB();
 
-// Listener hanya untuk lokal
 if (process.env.NODE_ENV !== 'production') {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
@@ -26,5 +24,4 @@ if (process.env.NODE_ENV !== 'production') {
   });
 }
 
-// Export default app adalah HARGA MATI untuk Vercel
 export default app;
