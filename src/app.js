@@ -14,6 +14,7 @@ app.use("/auth", auth);
 app.use("/campus", campus);
 app.use("/users", users);
 
+app.get("/", (req, res) => res.send("Server is running!"));
 app.use((err, req, res, next) => {
   if (err instanceof ClientError) {
     return res.status(err.statusCode).json({

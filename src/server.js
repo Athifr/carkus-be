@@ -4,10 +4,27 @@ import { app } from "./app.js";
 
 dotenv.config();
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
-});
+// Optimization untuk Serverless: Cek koneksi yang sudah ada
+const connectDB = async () => {
+  if (mongoose.connection.readyState >= 1) return;
+  try {
+    await mongoose.connect(process.env.MONGO_URL);
+    console.log("Connected to MongoDB");
+  } catch (err) {
+    console.error("MongoDB Connection Error:", err);
+  }
+};
 
-mongoose.connect(process.env.MONGO_URL, (err) => {
-  console.log(err ?? "Connected to MongoDB");
-});
+// Jalankan koneksi
+connectDB();
+
+// Listener hanya untuk lokal
+if (process.env.NODE_ENV !== 'production') {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export default app adalah HARGA MATI untuk Vercel
+export default app;
