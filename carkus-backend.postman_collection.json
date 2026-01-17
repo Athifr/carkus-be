@@ -1,0 +1,653 @@
+{
+	"info": {
+		"_postman_id": "76cebb6d-d4d4-431c-b3cd-df1359fc0818",
+		"name": "carkus-backend",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"const response = pm.response.toJSON()\r",
+							"pm.collectionVariables.set(\"userId\", response._id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/auth/register",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/users",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/users/6379f3ac70982e4081ca43b9",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"users",
+						"6379f3ac70982e4081ca43b9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"JWT_TOKEN\", json.token);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\": \"user123\",\r\n    \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/auth/login",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campus",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campus",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"campusId\", json._id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Campus 1\",\r\n    \"address\": \"Address 1\",\r\n    \"description\": \"Description 1\",\r\n    \"accreditation\": \"A\",\r\n    \"status\": \"PTN\",\r\n    \"faculties\": {\r\n        \"name\": \"Faculty 1\",\r\n        \"accreditation\": \"A\"\r\n    },\r\n    \"links\": {\r\n        \"instagram\": \"instagram.com\",\r\n        \"website\": \"website.com\"\r\n    },\r\n    \"imageUrl\": \"https://picsum.photos/200\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campus by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"status\": \"PTS\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "campus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "threads",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "thread by id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "threads",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"threadId\", json._id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Apa ya\",\r\n    \"content\": \"Thread Content\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "threads",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Thread 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "threads",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comments",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}/comments",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comments",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const json = pm.response.json();\r",
+							"pm.environment.set(\"commentId\", json._id);\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"Comment content\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}/comments",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}",
+						"comments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comment by id",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}/comments/{{commentId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"content\": \"comm\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}/comments/{{commentId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{JWT_TOKEN}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/campus/{{campusId}}/threads/{{threadId}}/comments/{{commentId}}",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"campus",
+						"{{campusId}}",
+						"threads",
+						"{{threadId}}",
+						"comments",
+						"{{commentId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "API_URL",
+			"value": "https://carkus-backend-dev.up.railway.app"
+		}
+	]
+}
